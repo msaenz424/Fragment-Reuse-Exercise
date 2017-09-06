@@ -14,20 +14,16 @@ public class MainActivity extends AppCompatActivity implements DroidsAdapter.OnC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        MainFragment mainFragment = new MainFragment();
-        mainFragment.setData(AndroidImageAssets.getHeads());
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .add(R.id.main_container, mainFragment)
-                .commit();
-
+        initFragment();
     }
 
     @Override
     public void OnClick(int id) {
+        initFragment();
+    }
+
+    private void initFragment(){
         List<Integer> list;
-        counter++;
         switch (counter){
             case 1:
                 list = AndroidImageAssets.getBodies();
@@ -45,7 +41,10 @@ public class MainActivity extends AppCompatActivity implements DroidsAdapter.OnC
         mainFragment.setData(list);
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
+                .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.fade_out)
                 .replace(R.id.main_container, mainFragment)
                 .commit();
+
+        counter++;
     }
 }
