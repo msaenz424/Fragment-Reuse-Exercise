@@ -1,5 +1,6 @@
 package com.migcavero.fragmentsanim;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,12 +10,14 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DroidsAdapter extends RecyclerView.Adapter<DroidsAdapter.CardAdapterViewHolder> {
+class DroidsAdapter extends RecyclerView.Adapter<DroidsAdapter.CardAdapterViewHolder> {
 
-    List<Integer> mDroisList = new ArrayList<>();
+    private OnClickCallback mOnClickCallback;
+    private List<Integer> mDroidsList = new ArrayList<>();
 
-    public DroidsAdapter(List<Integer> mDroisList) {
-        this.mDroisList = mDroisList;
+    DroidsAdapter(Context onClickCallback, List<Integer> mDroisList) {
+        this.mOnClickCallback = (OnClickCallback) onClickCallback;
+        this.mDroidsList = mDroisList;
     }
 
     @Override
@@ -27,24 +30,36 @@ public class DroidsAdapter extends RecyclerView.Adapter<DroidsAdapter.CardAdapte
 
     @Override
     public void onBindViewHolder(CardAdapterViewHolder holder, int position) {
-        holder.mDroidImageView.setImageResource(mDroisList.get(position));
+        holder.mDroidImageView.setImageResource(mDroidsList.get(position));
     }
 
     @Override
     public int getItemCount() {
-        if (mDroisList != null){
-            return mDroisList.size();
+        if (mDroidsList != null){
+            return mDroidsList.size();
         }
         return 0;
     }
 
-    public class CardAdapterViewHolder extends RecyclerView.ViewHolder {
+    class CardAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         ImageView mDroidImageView;
 
-        public CardAdapterViewHolder(View itemView) {
+        CardAdapterViewHolder(View itemView) {
             super(itemView);
             mDroidImageView = itemView.findViewById(R.id.droid_image_view);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            int id = mDroidsList.get(getAdapterPosition());
+            mOnClickCallback.OnClick(id);
         }
     }
+
+    interface OnClickCallback{
+        void OnClick(int id);
+    }
+
 }

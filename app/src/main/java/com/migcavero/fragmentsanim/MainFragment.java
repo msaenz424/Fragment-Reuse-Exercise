@@ -10,11 +10,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class MainFragment extends Fragment {
+import java.util.List;
+
+public class MainFragment extends Fragment{
 
     private static final int NUM_COLS = 3;
 
     View rootView;
+    List<Integer> mListData;
+
+    public MainFragment(){}
+
+
+    public void setData(List<Integer> listData){
+        this.mListData = listData;
+    }
 
     @Nullable
     @Override
@@ -25,9 +35,10 @@ public class MainFragment extends Fragment {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(rootView.getContext(), NUM_COLS, LinearLayoutManager.VERTICAL, false);
         mMainRecyclerView.setLayoutManager(gridLayoutManager);
 
-        DroidsAdapter mDroidsAdapter = new DroidsAdapter(AndroidImageAssets.getHeads());
+        DroidsAdapter mDroidsAdapter = new DroidsAdapter(getContext(), mListData);
         mMainRecyclerView.setAdapter(mDroidsAdapter);
 
         return rootView;
     }
+
 }
